@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "synthetic-example",
+  "source_ids": ["SYNTHETIC-EXAMPLE"],
+  "basis": "scenario",
+  "intervals": [
+    {"mean_it_power_kw": 10.0, "duration_hours": 8.0},
+    {"mean_it_power_kw": 4.0, "duration_hours": 16.0}
+  ],
+  "repeat_days": 1
+}

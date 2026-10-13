@@ -1,0 +1,14 @@
+{
+  "review_date": "2026-10-13",
+  "discovered_file_count": 136,
+  "private_inventory_published": false,
+  "source_tracking_fields": [
+    "source_id",
+    "public_url_or_private_reference",
+    "retrieval_date",
+    "sha256",
+    "review_status",
+    "applicability"
+  ],
+  "note": "Populate the full source ledger in private project storage. This public file defines its structure and aggregate review coverage only."
+}

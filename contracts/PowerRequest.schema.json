@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "PowerInterval": {
+      "additionalProperties": false,
+      "properties": {
+        "duration_hours": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Hours",
+          "type": "number"
+        },
+        "mean_it_power_kw": {
+          "minimum": 0,
+          "title": "Mean It Power Kw",
+          "type": "number"
+        }
+      },
+      "required": [
+        "mean_it_power_kw",
+        "duration_hours"
+      ],
+      "title": "PowerInterval",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "basis": {
+      "enum": [
+        "measured",
+        "calibrated",
+        "scenario"
+      ],
+      "title": "Basis",
+      "type": "string"
+    },
+    "carbon_factor_kgco2e_per_kwh": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Carbon Factor Kgco2E Per Kwh"
+    },
+    "intervals": {
+      "items": {
+        "$ref": "#/$defs/PowerInterval"
+      },
+      "maxItems": 8760,
+      "minItems": 1,
+      "title": "Intervals",
+      "type": "array"
+    },
+    "planning_pue": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Planning Pue"
+    },
+    "repeat_days": {
+      "default": 1,
+      "maximum": 366,
+      "minimum": 1,
+      "title": "Repeat Days",
+      "type": "integer"
+    },
+    "scenario_id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Scenario Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Source Ids",
+      "type": "array"
+    },
+    "tariff_pkr_per_kwh": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Tariff Pkr Per Kwh"
+    }
+  },
+  "required": [
+    "scenario_id",
+    "source_ids",
+    "basis",
+    "intervals"
+  ],
+  "title": "PowerRequest",
+  "type": "object"
+}

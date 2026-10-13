@@ -1,0 +1,28 @@
+# Engine-by-engine implementation specification
+
+## Common engine envelope
+Planned: engine_id, engine_version/commit, scenario_id, schema_version, input_snapshot_hash, data_snapshot_hash, status, outputs, check_results, assumptions, missing_fields, source_ids, formula_ids, rule_ids, warnings. Distinguish computation completion from feasibility. Per-check outcomes are PASS/FAIL/UNKNOWN/NOT_APPLICABLE; selection rules can additionally TRIGGER/NOT_TRIGGER. The current starter implements only a subset; avoid silently assigning this full envelope to existing endpoints.
+
+## E1 Workload recommendation
+Accept explicit training/inference/fine-tuning/data-preparation workload, exact model/version, precision, dataset and deployment preference. Where user already specifies workload, preserve it. Optional ranking compares workload candidates only when suitable benchmark/knowledge records exist. Return normalized profile, eligible benchmark IDs and exclusions. Unknown model/scenario is unsupported, not guessed. Test exact match, unsupported model, training vs inference and deterministic ordering.
+
+## E2 Performance requirements
+Training: deadline in seconds/minutes, benchmark quality/accuracy eligibility and supported repeated-run aggregation. Inference: output-token throughput vs requests/s kept separate; latency uses p99 TTFT and TPOT with exact units and accuracy thresholds. Concurrent users alone does not determine throughput without workload/request behavior. Availability targets need topology/failure assumptions, not fabricated reliability percentages. Return requirement profile with explicit minimum/maximum thresholds and applicability. Test equality boundary, infeasible target, mismatched benchmark scenario/precision and missing latency target.
+
+## E3 Infrastructure recommendation
+Load reviewed hardware candidates and benchmark-to-system mapping. Apply physical, socket/form-factor, interconnect, supported software, memory and firmware compatibility. Product family similarity is not verified compatibility. Reject known incompatibility; quarantine unresolved required compatibility. Rank feasible alternatives by declared minimum resources, cost, energy or multiobjective method only where corresponding evidence exists. Preserve rejected candidates and reasons. Test SXM vs PCIe mismatch, insufficient supported memory, duplicate candidate ID and no comparable price.
+
+## E4 Infrastructure sizing
+Turn candidate selection into quantities of GPUs/servers/RAM/storage/network/racks and preliminary power distribution. Use measured candidate throughput/deadline rather than arbitrary linear extrapolation. A rack-count lower bound from max(ceil(U/usable_U), ceil(weight/usable_weight), ceil(power/limit)) is not proof of a feasible placement: check each individual item then actual per-rack packing, PDU feed/phase/path limits and required reserves. Installed vs maximum supported GPU count must remain distinct. Return bill of resources plus rack assignments, constraints and unresolved topology. Test single oversized server, mixed server packing, equality limit, redundant path loss and no rack dimensions.
+
+## E5 Power and energy
+Implement equipment power, inclusive server boundary, interval integration and facility method. Keep rating, calibrated proxy, mean load and peak measurement separate. Heat conversion uses IT-room boundary; facility energy cannot be substituted blindly for IT-room heat. Current endpoint covers weighted interval IT energy with optional supplied PUE, tariff and carbon. Next tasks: bill-of-resources adapter, per-rack heat/power profile and electrical capacity checks. Carbon remains operational emissions under a matched factor, not embodied lifecycle impact. Test double-counting guards, partial-day period, missing PUE, UPS efficiency operating point and peak/average separation.
+
+## E6 Engineering cost
+Store line-item quotes with currency, date, quantity, source and included components; separate hardware purchase, installation, replacement and recurring cost. Electricity cost sums interval energy times corresponding tariff period; a single tariff is a labelled flat-rate scenario. Taxes, exchange rate, financing, discount rate and maintenance are explicit optional assumptions. Partial totals show missing line items. TCO/ROI use supported horizon/baseline and cannot be filled using an arbitrary constant. Test missing quote, mixed currencies, obsolete quote, energy tariff period alignment and no valid ROI baseline.
+
+## E7 Validation and risk
+Run applicability-filtered hard constraints on all engine results. FAIL dominates; any mandatory UNKNOWN prevents full-feasibility claim; all applicable hard constraints must PASS for a feasible claim. Warnings/recommendation triggers never override hard failures. Explain data gaps separately from physical infeasibility. Risk scoring requires an agreed rubric with source/weights; initially present severity and issue reasons without invented numeric score. Preserve error provenance and mitigations. Test missing power limit, failed budget, not-applicable cloud rack checks, stale evidence and contradictory rules.
+
+## Reports and acceptance
+Infrastructure report: selected candidate, quantities, rack layout, specification evidence and assumptions. Power report: IT/facility/peak basis, energy period, heat location and missing inputs. Cost report: line items, partial/full totals and quote dates. Risk report: failed/unknown checks and mitigations. Retrofit adds gap/upgrade roadmap reports. Team B receives versioned machine-readable handoff with the same numerical fields. Report totals must reconcile to engine outputs, never independently recalculate formulas in the frontend.
